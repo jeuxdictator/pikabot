@@ -35,15 +35,15 @@ client.on(`message`, message => {
     //anti botsception
     if (message.channel.type === "dm") return
     //anti dm
-    if (message.guild.id !== "474693373287071745") return
+    if (message.guild.id !== "530408315914813452") return
     
     if (client.guilds.get(message.guild.id).members.get(message.author.id).nickname) {
         var user = client.guilds.get(message.guild.id).members.get(message.author.id).nickname
     } else {
         var user = message.author.username
     }
-    if (message.content.startsWith("SK_")) {
-        if (message.content === "SK_mention") {
+    if (message.content.startsWith("PB_")) {
+        if (message.content === "PB_mention") {
             if (client.guilds.get(message.guild.id).members.get(message.author.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇")) {
                 client.guilds.get(message.guild.id).members.get(message.author.id).removeRole('566278745766232065').then(z => {
                     message.channel.send("le rôle \"ne pas mentionner\" vous a été retiré !")
