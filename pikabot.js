@@ -88,7 +88,7 @@ client.on(`message`, message => {
             }
             if (muted[message.author.id].who !== "nop") {
                 if (client.guilds.get(message.guild.id).members.get(muted[message.author.id].who).size === 0) message.reply("la personne a démute n'a pas été trouvé !")
-                client.guilds.get(message.guild.id).members.get(muted[message.author.id].who).removeRole(client.guilds.get(message.guild.id).roles.some(role => role.name === "muted").first().id).catch(z => message.channel.send("Une erreure est survenue !"))
+                client.guilds.get(message.guild.id).members.get(muted[message.author.id].who).removeRole(client.guilds.get(message.guild.id).roles.filter(role => role.name === "muted").first()).catch(z => message.channel.send("Une erreure est survenue !"))
                 muted[message.author.id] = {
                     who: "nop"
                 }
@@ -133,7 +133,7 @@ client.on(`message`, message => {
                 .setFooter("PikaBot ")
                 .setAuthor(user, message.author.avatarURL);
             message.channel.send(mentionnopembed).then(y => {
-                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(message.guild.roles.filter(role => role.name === "muted").first().id)
+                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(message.guild.roles.filter(role => role.name === "muted").first())
                 setTimeout(function () {
                     y.edit(re);
                     muted[message.mentions.members.filter(z => client.guilds.get(message.guild.id).members.get(z.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇")).first()] = {
@@ -142,7 +142,7 @@ client.on(`message`, message => {
                     fs.writeFile('muted.json', JSON.stringify(muted), (err) => {
                         if (err) message.channel.send(err);
                     });
-                    client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(message.guild.roles.filter(role => role.name === "muted").first().id)
+                    client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(message.guild.roles.filter(role => role.name === "muted").first())
 
                 }, 30000)
             })
