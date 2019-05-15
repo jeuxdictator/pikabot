@@ -57,7 +57,7 @@ client.on(`message`, message => {
     if (message.content.startsWith("PB_")) {
         if (message.content === "PB_mention") {
             if (client.guilds.get(message.guild.id).members.get(message.author.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇")) {
-                client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(client.guilds.get(message.guild.id).members.get(message.author.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇").first()).then(z => {
+                client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(message.guild.roles.some(role => role.name === "🔇Ne pas mentionner🔇").first()).then(z => {
                     message.channel.send("le rôle \"ne pas mentionner\" vous a été retiré !")
                     var usernot = user.replace(/ \| 🔇/gi, " ")
                     client.guilds.get(message.guild.id).members.get(message.author.id).setNickname(usernot)
@@ -65,7 +65,7 @@ client.on(`message`, message => {
                     message.channel.send("Une erreure est survenue, veuillez réessayé")
                 })
             } else {
-                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(client.guilds.get(message.guild.id).members.get(message.author.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇").first()).then(z => {
+                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(message.guild.roles.some(role => role.name === "🔇Ne pas mentionner🔇").first()).then(z => {
                     message.channel.send("le rôle \"ne pas mentionner\" vous a été ajouté !")
                     client.guilds.get(message.guild.id).members.get(message.author.id).setNickname(user + ' | 🔇')
                 }).catch(O_o => {
