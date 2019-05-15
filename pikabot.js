@@ -59,15 +59,12 @@ client.on(`message`, message => {
             if (client.guilds.get(message.guild.id).members.get(message.author.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇")) {
                 client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(message.guild.roles.filter(role => role.name === "🔇Ne pas mentionner🔇").first().id).then(z => {
                     message.channel.send("le rôle \"ne pas mentionner\" vous a été retiré !")
-                    var usernot = user.replace(/ \| 🔇/gi, " ")
-                    client.guilds.get(message.guild.id).members.get(message.author.id).setNickname(usernot)
                 }).catch(O_o => {
                     message.channel.send("Une erreure est survenue, veuillez réessayé")
                 })
             } else {
                 client.guilds.get(message.guild.id).members.get(message.author.id).addRole(message.guild.roles.filter(role => role.name === "🔇Ne pas mentionner🔇").first().id).then(z => {
                     message.channel.send("le rôle \"ne pas mentionner\" vous a été ajouté !")
-                    client.guilds.get(message.guild.id).members.get(message.author.id).setNickname(user + ' | 🔇')
                 }).catch(O_o => {
                     message.channel.send("Une erreure est survenue, veuillez réessayé")
                 })
@@ -136,7 +133,7 @@ client.on(`message`, message => {
                 .setFooter("PikaBot ")
                 .setAuthor(user, message.author.avatarURL);
             message.channel.send(mentionnopembed).then(y => {
-                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(client.guilds.get(message.guild.id).roles.some(role => role.name === "muted").first().id)
+                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(message.guild.roles.filter(role => role.name === "muted").first().id)
                 setTimeout(function () {
                     y.edit(re);
                     muted[message.mentions.members.filter(z => client.guilds.get(message.guild.id).members.get(z.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇")).first()] = {
@@ -145,7 +142,7 @@ client.on(`message`, message => {
                     fs.writeFile('muted.json', JSON.stringify(muted), (err) => {
                         if (err) message.channel.send(err);
                     });
-                    client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(client.guilds.get(message.guild.id).roles.some(role => role.name === "muted").first().id)
+                    client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(message.guild.roles.filter(role => role.name === "muted").first().id)
 
                 }, 30000)
             })
