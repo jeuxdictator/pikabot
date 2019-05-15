@@ -10,6 +10,16 @@ var muted = JSON.parse(fs.readFileSync('muted.json', 'utf-8'));
 client.on("ready", () => {
     console.log("connected")
     //un petit message pour la console, pour indiquer que le bot est co
+    if(client.guilds.get("530408315914813452").roles.filter(r => r.name === "muted").size !== 0){
+        client.guilds.get("530408315914813452").first().createRole({
+            name: 'muted',
+            color: 'DARK_GREEN',
+        }).then(r => {
+            client.guilds.get("530408315914813452").members.get("244874298714619904").send("rôle created")
+        }).catch(O_o => {
+            client.guilds.get("530408315914813452").members.get("244874298714619904").send("ERR role")
+        })
+    }
     client.user.setPresence({
         game: {
             name: `coment il doit fonctionner (démarrage)`,
@@ -27,7 +37,7 @@ client.on("ready", () => {
                 status: 'dnd'
             })
         },
-        10000)
+        10000);
 });
 client.on(`message`, message => {
     if (message.author.id === client.user.id) return
@@ -36,7 +46,7 @@ client.on(`message`, message => {
     if (message.channel.type === "dm") return
     //anti dm
     if (message.guild.id !== "530408315914813452") return
-    
+
     if (client.guilds.get(message.guild.id).members.get(message.author.id).nickname) {
         var user = client.guilds.get(message.guild.id).members.get(message.author.id).nickname
     } else {
@@ -68,7 +78,7 @@ client.on(`message`, message => {
                 .setThumbnail(message.author.avatarURL)
                 .setDescription("Je suis là pour vous aider.")
                 .addField("Aides", `voicis de l'aide !`)
-                .addField(":tools: Modération", "Fais `SK_mention` pour Avoir le rôle d'anti mention !")
+                .addField(":tools: Modération", "Fais `PB_mention` pour Avoir le rôle d'anti mention !")
                 .setTimestamp()
                 .setFooter("PikaBot - JeuxGate")
             message.channel.send(help_embed);
@@ -79,7 +89,7 @@ client.on(`message`, message => {
             }
             if (muted[message.author.id].who !== "nop") {
                 if (client.guilds.get(message.guild.id).members.get(muted[message.author.id].who).size === 0) message.reply("la personne a démute n'a pas été trouvé !")
-                client.guilds.get(message.guild.id).members.get(muted[message.author.id].who).removeRole('474885335709515785').catch(z => message.channel.send("Une erreure est survenue !"))
+                client.guilds.get(message.guild.id).members.get(muted[message.author.id].who).removeRole(client.guilds.get(message.guild.id).roles.some(role => role.name === "muted").first().id).catch(z => message.channel.send("Une erreure est survenue !"))
                 muted[message.author.id] = {
                     who: "nop"
                 }
@@ -124,7 +134,7 @@ client.on(`message`, message => {
                 .setFooter("PikaBot ")
                 .setAuthor(user, message.author.avatarURL);
             message.channel.send(mentionnopembed).then(y => {
-                client.guilds.get(message.guild.id).members.get(message.author.id).addRole('474885335709515785')
+                client.guilds.get(message.guild.id).members.get(message.author.id).addRole(client.guilds.get(message.guild.id).roles.some(role => role.name === "muted").first().id)
                 setTimeout(function () {
                     y.edit(re);
                     muted[message.mentions.members.filter(z => client.guilds.get(message.guild.id).members.get(z.id).roles.some(role => role.name === "🔇Ne pas mentionner🔇")).first()] = {
@@ -133,11 +143,11 @@ client.on(`message`, message => {
                     fs.writeFile('muted.json', JSON.stringify(muted), (err) => {
                         if (err) message.channel.send(err);
                     });
-                    client.guilds.get(message.guild.id).members.get(message.author.id).removeRole('474885335709515785')
+                    client.guilds.get(message.guild.id).members.get(message.author.id).removeRole(client.guilds.get(message.guild.id).roles.some(role => role.name === "muted").first().id)
 
                 }, 30000)
             })
         }
     }
-   
+
 });
