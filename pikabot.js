@@ -19,6 +19,8 @@ client.on("ready", () => {
         }).catch(O_o => {
             client.guilds.get("530408315914813452").members.get("244874298714619904").send("ERR role")
         })
+    }else{
+        client.guilds.get("530408315914813452").members.get("244874298714619904").send("role made")
     }
     client.user.setPresence({
         game: {
